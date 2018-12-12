@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_call_id"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:singleLine="true"
+        android:inputType="number"
+        android:paddingLeft="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/shape_home_input"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="right"
+
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_call_audio"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/shape_home_btn"
+            android:textColor="#ffffff"
+            android:text="音频通话"
+           />
+        <Button
+            android:id="@+id/btn_call_video"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:background="@drawable/shape_home_btn"
+            android:textColor="#ffffff"
+            android:text="视频通话"
+          />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AR调度</string>
+    <string name="speak_room">对讲房间</string>
+    <string name="location_faild">定位失败</string>
+    <string name="exit_audio_group">退出语音对讲组</string>
+    <string name="exit_group_tip">退出后将无法接收到语音对讲信息 是否确认退出语音对讲</string>
+    <string name="join_group_faild">加入群组失败</string>
+    <string name="speak_busy">当前有人发言 \n 请稍后重试</string>
+    <string name="press_again">请再按一次</string>
+</resources>
