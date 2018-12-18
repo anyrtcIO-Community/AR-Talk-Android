@@ -990,12 +990,29 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
                 tvAccept.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        if (isMonitoring){
+                            ToastUtil.show("你正在被监看");
+                            mRTMaxKit.rejectCall(strCallId);
+                            if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
+                                CallRequestDialog.dismiss();
+                            }
+                            return;
+                        }
                         mRTMaxKit.acceptCall(strCallId);
                         isCall = true;
                         if (type == 0) {
                             isAudioCall=false;
                             toggleVideoLayout();
                         } else {
+                            if (isMonitoring){
+                                ToastUtil.show("你正在被监看");
+                                mRTMaxKit.rejectCall(strCallId);
+                                if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
+                                    CallRequestDialog.dismiss();
+                                }
+                                return;
+                            }
                             isAudioCall=true;
                             ShowAudioCallDialog(strUserId);
                         }
