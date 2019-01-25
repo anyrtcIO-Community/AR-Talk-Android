@@ -38,6 +38,7 @@ import org.anyrtc.anyrtcspeak.utils.SoundPlayUtils;
 import org.anyrtc.anyrtcspeak.utils.ToastUtil;
 import org.anyrtc.anyrtcspeak.weight.CustomDialog;
 import org.anyrtc.anyrtcspeak.weight.RTCVideoView;
+import org.anyrtc.common.enums.AnyRTCNetQuality;
 import org.anyrtc.common.enums.AnyRTCVideoQualityMode;
 import org.anyrtc.common.utils.AnyRTCAudioManager;
 import org.anyrtc.meet_kit.AnyRTCMeetEngine;
@@ -453,7 +454,6 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         }
         return super.onKeyDown(keyCode, event);
     }
-
     RTMaxEvent rtMaxEvent = new RTMaxEvent() {
         @Override
         public void onRTCJoinTalkGroupOK(final String strGroupId) {
@@ -468,7 +468,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         }
 
         @Override
-        public void onRTCJoinTalkGroupFailed(String strGroupId, final int nCode) {
+        public void onRTCJoinTalkGroupFailed(String s, final int nCode, String s1) {
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -479,6 +479,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
                 }
             });
         }
+
 
         @Override
         public void onRTCLeaveTalkGroup(final int nCode) {
@@ -848,9 +849,10 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener, 
         }
 
         @Override
-        public void onRTCNetworkStatus(String strRTCPeerId, String strUserId, int nNetSpeed, int nPacketLost) {
+        public void onRTCNetworkStatus(String s, String s1, int i, int i1, AnyRTCNetQuality anyRTCNetQuality) {
 
         }
+
 
         @Override
         public void onRTCUserMessage(final String strUserId, String strUserName, String strUserHeader, final String strContent) {
