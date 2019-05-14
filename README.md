@@ -11,31 +11,18 @@ AR-Talk-Android对讲调度demo,包括对讲、视频上报、监看、音视频
 ### app体验
 
 ##### 扫码下载
-![image](https://www.pgyer.com/app/qrcode/LfFY)
-##### [点击下载](https://www.pgyer.com/LfFY)
-##### [WEB在线体验](https://www.anyrtc.io/demo/dispatch)
+![image](https://www.pgyer.com/app/qrcode/GVI3)
+##### [点击下载](https://www.pgyer.com/app/qrcode/GVI3)
+##### [WEB在线体验](https://beyond.anyrtc.io/demo/dispatch)
 
 ### SDK集成
 
-# > 方式一
->1. 下载本项目
->1. 将本项目libs目录下的rtmax_kit-release.aar文件放入你项目的libs目录中
->2. 在Model下的build.gradle文件添加如下代码依赖
+# > 方式一[ ![Download](https://api.bintray.com/packages/dyncanyrtc/ar_dev/rtmax/images/download.svg) ](https://bintray.com/dyncanyrtc/ar_dev/rtmax/_latestVersion)
+添加Jcenter仓库 Gradle依赖：
 
-```
-android
-{
-
- repositories {
-        flatDir {dirs 'libs'}
-    }
-
- }
-
-```
 ```
 dependencies {
-   implementation(name: 'rtmax_kit-release', ext: 'aar')
+  compile 'org.ar:rtmax_kit:3.0.1'
 }
 ```
 
@@ -44,7 +31,7 @@ dependencies {
 ### 编译环境
 
 开发工具 AndroidStudio
-Gradle 3.0.1
+Gradle 2.3.3
 
 ### 运行环境
 
@@ -59,15 +46,15 @@ Android API 16+
 
 ### 替换开发者账号
 在[anyRTC官网](http://www.anyrtc.io)获取了开发者账号，AppID等信息后，替换DEMO中
-/utils/Constans.class 类中的开发者信息即可
+DeveloperInfo 类中的开发者信息即可
 
 ### 操作步骤
 
-1、两台移动设备加入即可开始对讲，要体验监看，视频呼叫等功能请[WEB在线体验](https://www.anyrtc.io/demo/dispatch)；
+1、两台移动设备加入即可开始对讲，要体验监看，视频呼叫等功能请[WEB在线体验](https://beyond.anyrtc.io/demo/dispatch)；
 
 
 ### 完整文档
-SDK集成，API介绍，详见官方完整文档：[点击查看](https://www.anyrtc.io/resoure)
+SDK集成，API介绍，详见官方完整文档：[点击查看](https://docs.anyrtc.io/v1/RTMAX/android.html)
 
 ### AR-Talk-iOS
 
