@@ -1,1 +1,1 @@
-include ':app','rtmax_kit'
+include ':app'
