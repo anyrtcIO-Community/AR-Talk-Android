@@ -22,7 +22,7 @@ AR-Talk-Android对讲调度demo,包括对讲、视频上报、监看、音视频
 
 ```
 dependencies {
-  compile 'org.ar:rtmax_kit:3.0.1'
+  compile 'org.ar:rtmax_kit:3.0.2'
 }
 ```
 
