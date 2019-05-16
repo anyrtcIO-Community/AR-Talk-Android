@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.utils;
+package org.ar.arrtmax.utils;
 
 import java.util.Random;
 

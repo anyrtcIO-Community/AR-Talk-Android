@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax;
+package org.ar.arrtmax;
 
 import org.junit.Test;
 

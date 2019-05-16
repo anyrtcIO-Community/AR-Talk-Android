@@ -1,8 +1,8 @@
-package org.anyrtc.arrtmax;
+package org.ar.arrtmax;
 
 import android.app.Application;
 
-import org.anyrtc.arrtmax.utils.NameUtils;
+import org.ar.arrtmax.utils.NameUtils;
 import org.ar.rtmax_kit.ARMaxEngine;
 
 import java.util.Random;

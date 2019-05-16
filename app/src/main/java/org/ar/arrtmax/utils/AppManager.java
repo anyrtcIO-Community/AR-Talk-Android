@@ -1,10 +1,11 @@
-package org.anyrtc.arrtmax.utils;
+package org.ar.arrtmax.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
-import org.anyrtc.arrtmax.activity.BaseActivity;
+
+import org.ar.arrtmax.activity.BaseActivity;
 
 import java.util.Stack;
 

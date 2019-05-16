@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.activity;
+package org.ar.arrtmax.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.gyf.barlibrary.ImmersionBar;
 
-import org.anyrtc.arrtmax.utils.AppManager;
+import org.ar.arrtmax.utils.AppManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected ImmersionBar mImmersionBar;

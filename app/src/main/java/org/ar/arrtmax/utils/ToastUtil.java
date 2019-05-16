@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.utils;
+package org.ar.arrtmax.utils;
 
 
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import org.anyrtc.arrtmax.ARApplication;
+import org.ar.arrtmax.ARApplication;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.activity;
+package org.ar.arrtmax.activity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -29,16 +29,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.anyrtc.arrtmax.ARApplication;
-import org.anyrtc.arrtmax.R;
-import org.anyrtc.arrtmax.adapter.MessageAdapter;
-import org.anyrtc.arrtmax.adapter.TabAdapter;
-import org.anyrtc.arrtmax.bean.MessageBean;
-import org.anyrtc.arrtmax.utils.SoundPlayUtils;
-import org.anyrtc.arrtmax.utils.ToastUtil;
-import org.anyrtc.arrtmax.weight.CustomDialog;
-import org.anyrtc.arrtmax.weight.RTCVideoView;
-import org.anyrtc.common.utils.AnyRTCAudioManager;
+import org.ar.arrtmax.ARApplication;
+import org.ar.arrtmax.R;
+import org.ar.arrtmax.adapter.MessageAdapter;
+import org.ar.arrtmax.adapter.TabAdapter;
+import org.ar.arrtmax.bean.MessageBean;
+import org.ar.arrtmax.utils.SoundPlayUtils;
+import org.ar.arrtmax.utils.ToastUtil;
+import org.ar.arrtmax.weight.CustomDialog;
+import org.ar.arrtmax.weight.RTCVideoView;
 import org.ar.common.enums.ARNetQuality;
 import org.ar.common.utils.AR_AudioManager;
 import org.ar.rtmax_kit.ARMaxEngine;
@@ -79,7 +78,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     private String current_people_num = "";
     private String current_people_speaking = "";
     private boolean hadSomeOneSpeaking = false;
-    private boolean isJoinAnyRTCSuccess = false;
+    private boolean isJoinarSuccess = false;
     private boolean isPressed = false;
     boolean isCall = false;
     boolean isAudioCall=false;
@@ -281,7 +280,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 public void run() {
                     showLog("OnRtcJoinTalkGroupOK====" + groupId);
                     ToastUtil.show("加入群组成功");
-                    isJoinAnyRTCSuccess = true;
+                    isJoinarSuccess = true;
                 }
             });
         }
@@ -293,7 +292,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 public void run() {
                     showLog("OnRtcJoinTalkGroupFailed====" + code);
                     ToastUtil.show("加入群组失败" + code);
-                    isJoinAnyRTCSuccess = false;
+                    isJoinarSuccess = false;
                     finish();
                 }
             });
@@ -807,7 +806,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     ToastUtil.show("请输入上报用户的ID");
                     return;
                 }
-                if (!isJoinAnyRTCSuccess) {
+                if (!isJoinarSuccess) {
                     ToastUtil.show("加入房间未成功");
                     return;
                 }
@@ -1027,7 +1026,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (v.getId() == R.id.btn_apply) {
-            if (isJoinAnyRTCSuccess) {
+            if (isJoinarSuccess) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (hadSomeOneSpeaking) {
                         tvTitle.setText(current_people_speaking);

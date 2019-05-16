@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.bean;
+package org.ar.arrtmax.bean;
 
 /**
  * Created by liuxiaozhong on 2018/10/25.

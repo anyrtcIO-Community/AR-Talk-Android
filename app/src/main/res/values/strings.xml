@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ARRtmax</string>
+    <string name="app_name">AR智能调度</string>
     <string name="speak_room">对讲房间</string>
     <string name="location_faild">定位失败</string>
     <string name="exit_audio_group">退出语音对讲组</string>

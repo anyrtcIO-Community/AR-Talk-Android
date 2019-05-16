@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.adapter;
+package org.ar.arrtmax.adapter;
 
 import android.graphics.Color;
 import android.widget.TextView;
@@ -6,8 +6,8 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
-import org.anyrtc.arrtmax.R;
-import org.anyrtc.arrtmax.bean.MessageBean;
+import org.ar.arrtmax.R;
+import org.ar.arrtmax.bean.MessageBean;
 
 
 /**

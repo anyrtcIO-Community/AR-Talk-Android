@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.weight;
+package org.ar.arrtmax.weight;
 
 import android.app.Dialog;
 import android.content.Context;

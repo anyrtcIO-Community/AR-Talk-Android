@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.activity;
+package org.ar.arrtmax.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,8 +7,8 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 
-import org.anyrtc.arrtmax.R;
-import org.anyrtc.arrtmax.utils.ToastUtil;
+import org.ar.arrtmax.R;
+import org.ar.arrtmax.utils.ToastUtil;
 
 import java.util.List;
 

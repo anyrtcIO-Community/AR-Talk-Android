@@ -1,10 +1,10 @@
-package org.anyrtc.arrtmax.utils;
+package org.ar.arrtmax.utils;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import org.anyrtc.arrtmax.R;
+import org.ar.arrtmax.R;
 
 
 /**

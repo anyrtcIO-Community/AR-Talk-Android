@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.weight;
+package org.ar.arrtmax.weight;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import org.anyrtc.arrtmax.R;
+import org.ar.arrtmax.R;
 import org.webrtc.EglBase;
 import org.webrtc.EglRenderer;
 import org.webrtc.PercentFrameLayout;

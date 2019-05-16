@@ -1,4 +1,4 @@
-package org.anyrtc.arrtmax.weight;
+package org.ar.arrtmax.weight;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -8,7 +8,7 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import org.anyrtc.arrtmax.R;
+import org.ar.arrtmax.R;
 
 
 public class CustomDialog extends BaseDialog {
