@@ -12,7 +12,6 @@ public class DeveloperInfo {
      */
     public final static String APPID = "";
 
-
     /**
      * anyRTC 平台的apptoken
      */

@@ -36,8 +36,8 @@ import org.ar.arrtmax.adapter.TabAdapter;
 import org.ar.arrtmax.bean.MessageBean;
 import org.ar.arrtmax.utils.SoundPlayUtils;
 import org.ar.arrtmax.utils.ToastUtil;
+import org.ar.arrtmax.weight.ARVideoView;
 import org.ar.arrtmax.weight.CustomDialog;
-import org.ar.arrtmax.weight.RTCVideoView;
 import org.ar.common.enums.ARNetQuality;
 import org.ar.common.utils.AR_AudioManager;
 import org.ar.rtmax_kit.ARMaxEngine;
@@ -46,10 +46,8 @@ import org.ar.rtmax_kit.ARMaxKit;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.Logging;
-import org.webrtc.PercentFrameLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -59,8 +57,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     TabLayout tvTab;
     ViewPager viewPager;
     RecyclerView rvMessage;
-    ImageButton btnApply;
-    LinearLayout llMainLayout,llRemoteVideo;
+    ImageButton btnApply,btn_hang_up,btn_switch;
+    LinearLayout llMainLayout;
     RelativeLayout rl_call_video;
     RelativeLayout rl_call_layout;
 
@@ -69,11 +67,10 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     TabAdapter tabAdapter;
     private CustomDialog exitDialog;
     private ARMaxKit mRTMaxKit;
-    RTCVideoView localVideo;
+    private ARVideoView arVideoView;
     private AR_AudioManager mRTCAudioManager;
     private CustomDialog CallRequestDialog;
     private CustomDialog qiangChaDialog;
-    private CustomDialog ReportVideoDialog;
     private CustomDialog AudioCallDialog;
     private String current_people_num = "";
     private String current_people_speaking = "";
@@ -87,7 +84,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
 
     boolean isReporting = false;//是否正在上报
     private MessageAdapter messageAdapter;
-    private HashMap<String, PercentFrameLayout> remoteVideoList = new HashMap<>();
     private EditText etMessage, etReport;
 
     private Button btnSendMessage, btnReport;
@@ -103,14 +99,16 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         viewPager=findViewById(R.id.viewPager);
         rvMessage=findViewById(R.id.rl_message);
         btnApply=findViewById(R.id.btn_apply);
+        btn_hang_up=findViewById(R.id.btn_hang_up);
+        btn_switch=findViewById(R.id.btn_switch);
         tvUserId=findViewById(R.id.tv_user_id);
         tv_exit=findViewById(R.id.tv_exit);
         llMainLayout=findViewById(R.id.ll_main_layout);
         rl_call_video=findViewById(R.id.rl_call_video);
-        llRemoteVideo=findViewById(R.id.ll_remote_video);
         rl_call_layout=findViewById(R.id.rl_call_layout);
         tv_exit.setOnClickListener(this);
-
+        btn_hang_up.setOnClickListener(this);
+        btn_switch.setOnClickListener(this);
 
 
         for (int i = 0; i < tabItem.length; i++) {
@@ -123,7 +121,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         btnSendMessage = view_message.findViewById(R.id.btn_send_message);
         btnSendMessage.setOnClickListener(this);
 
-        localVideo = new RTCVideoView(ARMaxEngine.Inst().egl(), this);
 
 
         etReport = view_report.findViewById(R.id.et_report_id);
@@ -175,7 +172,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         rvMessage.setAdapter(messageAdapter);
 
         mRTMaxKit = new ARMaxKit(arMaxEvent);
-
+        arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(),this,false,mRTMaxKit);
+        arVideoView.setVideoViewLayout(false, Gravity.CENTER,LinearLayout.HORIZONTAL);
         vb = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         mRTMaxKit.joinTalkGroup("123456789", ARApplication.tempUserid, getUserData());
         tvUserId.setText("用户ID:" + ARApplication.tempUserid);
@@ -432,8 +430,9 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     ToastUtil.show("正在被用户" + userId + "监看");
                     mRTMaxKit.acceptVideoMonitor(userId);
                     isMonitoring = true;
-                    mRTMaxKit.setLocalVideoCapturer(localVideo.openVideoRender("localRender").GetRenderPointer());
-                    localVideo.getVideoRender().mLayout.setPosition(0,0,0,0);
+                    //监看  打开本地摄像头  并把本地像大小设置为0
+                    mRTMaxKit.setLocalVideoCapturer(arVideoView.openLocalVideoRender().GetRenderPointer());
+                    arVideoView.getLocalVideoRender().mLayout.setPosition(0,0,0,0);
 
 
                 }
@@ -447,6 +446,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 public void run() {
                     ToastUtil.show("用户" + userId + "停止监看");
                     isMonitoring = false;
+                    //停止监看  移除本地像  关闭采集
+                    arVideoView.removeLocalVideoRender();
                     mRTMaxKit.closeLocalVideoCapture();
                     showLog("OnRtcVideoMonitorClose======userId===" + userId);
                 }
@@ -591,13 +592,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void run() {
                     showLog("OnRtcOpenVideoRender======strRtcPeerId===" + peerId + "=======userId" + userId);
-                    final RTCVideoView rtcVideoView = new RTCVideoView(ARMaxEngine.Inst().egl(), SpeakActivity.this);
-                    mRTMaxKit.setRTCRemoteVideoRender(publishId, rtcVideoView.openVideoRender(peerId).GetRenderPointer());
-                    rtcVideoView.getVideoRender().mView.setZOrderMediaOverlay(true);
-                    rtcVideoView.getVideoRender().mLayout.setTag(userId);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(200, 266);
-                    llRemoteVideo.addView(rtcVideoView.getVideoRender().mLayout, params);
-                    remoteVideoList.put(peerId, rtcVideoView.getVideoRender().mLayout);
+                    //打开远程视频
+                    mRTMaxKit.setRTCRemoteVideoRender(publishId, arVideoView.openRemoteVideoRender(publishId).GetRenderPointer());
                 }
             });
         }
@@ -609,14 +605,9 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 public void run() {
                     showLog("OnRtcCloseVideoRender======strRtcPeerId===" + peerId + "=======userId" + userId);
                     if (null != mRTMaxKit) {
+                        //移除
                         mRTMaxKit.setRTCRemoteVideoRender(publishId, 0);
-                        PercentFrameLayout view = remoteVideoList.get(peerId);
-                        if (null != view) {
-                            if (llRemoteVideo != null) {
-                                llRemoteVideo.removeView(view);
-                            }
-                            remoteVideoList.remove(peerId);
-                        }
+                        arVideoView.removeRemoteRender(publishId);
                     }
                 }
             });
@@ -751,9 +742,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
             ObjectAnimator animator = ObjectAnimator.ofFloat(llMainLayout, "translationX", llMainLayout.getTranslationX(), -llMainLayout.getWidth());
             animator.setDuration(400);
             animator.start();
-            mRTMaxKit.setLocalVideoCapturer(localVideo.openVideoRender("localRender").GetRenderPointer());
-            localVideo.getVideoRender().mView.setZOrderMediaOverlay(false);
-            rl_call_video.addView(localVideo.getVideoRender().mLayout);
+            //打开本地摄像头
+            mRTMaxKit.setLocalVideoCapturer(arVideoView.openLocalVideoRender().GetRenderPointer());
             rl_call_layout.setVisibility(View.VISIBLE);
         } else {
             ObjectAnimator animator = ObjectAnimator.ofFloat(llMainLayout, "translationX", llMainLayout.getTranslationX(), 0);
@@ -819,11 +809,31 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     ToastUtil.show("异常 error:" + result);
                 } else {
                     isReporting=true;
-                    ShowReportVideoDialog();
+                    toggleVideoLayout();
                 }
                 break;
             case R.id.tv_exit:
                 ShowExitDialog();
+                break;
+            case R.id.btn_hang_up:
+                if (isReporting){//如果是上报
+                    isReporting=false;
+                    mRTMaxKit.closeReportVideo();
+                    arVideoView.removeLocalVideoRender();
+                    mRTMaxKit.closeLocalVideoCapture();
+                }else {
+                    if (mRTMaxKit != null) {
+                        mRTMaxKit.leaveCall();
+                    }
+                    isCall = false;
+                    rl_call_video.removeAllViews();
+                    arVideoView.removeLocalVideoRender();
+                    mRTMaxKit.closeLocalVideoCapture();
+                }
+                toggleVideoLayout();
+                break;
+            case R.id.btn_switch:
+                mRTMaxKit.switchCamera();
                 break;
         }
     }
@@ -895,45 +905,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
-
-    public void ShowReportVideoDialog() {
-        CustomDialog.Builder builder = new CustomDialog.Builder(this);
-        builder.setContentView(R.layout.dialog_report_layout)
-                .setAnimId(R.style.AnimBottom)
-                .setCancelable(false)
-                .setGravity(Gravity.CENTER)
-                .setLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-                .setBackgroundDrawable(true)
-                .build();
-        ReportVideoDialog = builder.show(new CustomDialog.Builder.onInitListener() {
-            @Override
-            public void init(CustomDialog view) {
-
-                final RelativeLayout reportVideoLayout = view.findViewById(R.id.rl_report_video);
-                mRTMaxKit.setLocalVideoCapturer(localVideo.openVideoRender("localRender").GetRenderPointer());
-                reportVideoLayout.addView(localVideo.getVideoRender().mLayout);
-                ImageButton btnClose = view.findViewById(R.id.btn_close_report);
-                ImageButton btnSwitch = view.findViewById(R.id.btn_switch);
-                btnClose.setVisibility(View.VISIBLE);
-                btnSwitch.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mRTMaxKit.switchCamera();
-                    }
-                });
-                btnClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        isReporting=false;
-                        mRTMaxKit.closeReportVideo();
-                        mRTMaxKit.closeLocalVideoCapture();
-                        reportVideoLayout.removeAllViews();
-                        ReportVideoDialog.dismiss();
-                    }
-                });
-            }
-        });
-    }
 
     public void ShowAudioCallDialog(final String userId) {
         CustomDialog.Builder builder = new CustomDialog.Builder(this);
