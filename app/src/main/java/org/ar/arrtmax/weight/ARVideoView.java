@@ -274,15 +274,6 @@ public class ARVideoView implements View.OnTouchListener{
         LocalVideoRender.mLayout.setPosition(
                 LocalVideoRender.x, LocalVideoRender.y, LocalVideoRender.w, LocalVideoRender.h);
         LocalVideoRender.surfaceViewRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
-        LocalVideoRender.surfaceViewRenderer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (LocalVideoRender.isFullScreen()){
-                }else {
-                    SwitchViewToFullscreen(LocalVideoRender,GetFullScreen());
-                }
-            }
-        });
         LocalVideoRender.flLoading.setVisibility(VISIBLE);
 
 
@@ -369,15 +360,6 @@ public class ARVideoView implements View.OnTouchListener{
             remoteVideoRender.videoRenderer = new VideoRenderer(remoteVideoRender.surfaceViewRenderer);
 
             final VideoView finalRemoteVideoRender1 = remoteVideoRender;
-            remoteVideoRender.surfaceViewRenderer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View b) {
-                    if (finalRemoteVideoRender1.isFullScreen()){
-                    }else {
-                        SwitchViewToFullscreen(finalRemoteVideoRender1,GetFullScreen());
-                    }
-                }
-            });
             mRemoteRenderList.put(videoId, finalRemoteVideoRender1);
             if (isSameSize) {
                 updateVideoViewSameSize();
