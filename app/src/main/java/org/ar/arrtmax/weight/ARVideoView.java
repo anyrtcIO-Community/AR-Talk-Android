@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -37,7 +38,7 @@ import static android.view.View.VISIBLE;
 /**
  * Created by liuxiaozhong on 2019/1/11.
  */
-public class ARVideoView {
+public class ARVideoView implements View.OnTouchListener{
 
     public RelativeLayout rlVideoGroup;//所有视频的容器布局
 
@@ -46,8 +47,6 @@ public class ARVideoView {
     private Context mContext;//上下文对象
 
     public VideoView LocalVideoRender;//本地视频显示对象
-
-    private VideoView ScreenShareRender;//屏幕共享显示对象
 
     private LinkedHashMap<String, VideoView> mRemoteRenderList;//远程视频集合
 
@@ -78,8 +77,48 @@ public class ARVideoView {
         mScreenWidth = ScreenUtils.getScreenWidth(mContext);
         mScreenHeight = ScreenUtils.getScreenHeight(mContext) - ScreenUtils.getStatusHeight(mContext);
         this.arMaxKit=arMaxKit;
+        rlVideoGroup.setOnTouchListener(this);
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int startX = (int) event.getX();
+            int startY = (int) event.getY();
+            if (LocalVideoRender.Hited(startX, startY)) {
+                return true;
+            } else {
+                Iterator<Map.Entry<String, VideoView>> iter = mRemoteRenderList.entrySet().iterator();
+                while (iter.hasNext()) {
+                    Map.Entry<String, VideoView> entry = iter.next();
+                    String peerId = entry.getKey();
+                    VideoView render = entry.getValue();
+                    if (render.Hited(startX, startY)) {
+                        return true;
+                    }
+                }
+            }
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            int startX = (int) event.getX();
+            int startY = (int) event.getY();
+            if (LocalVideoRender.Hited(startX, startY)) {
+                SwitchViewToFullscreen(LocalVideoRender, GetFullScreen());
+                return true;
+            } else {
+                Iterator<Map.Entry<String, VideoView>> iter = mRemoteRenderList.entrySet().iterator();
+                while (iter.hasNext()) {
+                    Map.Entry<String, VideoView> entry = iter.next();
+                    String peerId = entry.getKey();
+                    VideoView render = entry.getValue();
+                    if (render.Hited(startX, startY)) {
+                        SwitchViewToFullscreen(render, GetFullScreen());
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 
     /**
@@ -137,20 +176,14 @@ public class ARVideoView {
             if (!isFullScreen()) {
                 int left = x * mScreenWidth / 100;
                 int right = (x + w) * mScreenWidth / 100;
-                int top =( y+h) * (mScreenHeight / 100);
-                int bottom = (y+h+w) * (mScreenHeight/100);
+                int top = y *mLayout.getHeight() / 100;
+                int bottom = (y + h ) * mLayout.getHeight() / 100;
                 if ((px >= left && px <= right) && (py >= top && py <= bottom)) {
                     return true;
                 }
             }
             return false;
         }
-//        public  boolean Hited(int px, int py) {
-//            Rect frame = new Rect();
-//            surfaceViewRenderer.getHitRect(frame);
-//            return frame.contains(px,py);
-//
-//        }
 
         public void close() {
             mLayout.removeView(surfaceViewRenderer);
@@ -298,71 +331,7 @@ public class ARVideoView {
         }
     }
 
-    public void saveLocalPicture() {
-        LocalVideoRender.surfaceViewRenderer.addFrameListener(new EglRenderer.FrameListener() {
-            @Override
-            public void onFrame(Bitmap bitmap) {
-                saveBitmap(bitmap, "local");
-            }
-        }, 1f);
-    }
 
-    public void saveRemotePicture(final String videoId) {
-        VideoView remoteVideoRender = mRemoteRenderList.get(videoId);
-        remoteVideoRender.surfaceViewRenderer.addFrameListener(new EglRenderer.FrameListener() {
-            @Override
-            public void onFrame(Bitmap bitmap) {
-                Log.d("surfaceView", getStringDate() + "  " + bitmap.toString());
-                saveBitmap(bitmap, videoId);
-            }
-        }, 1f);
-    }
-
-    /**
-     * 获取当前时间戳
-     *
-     * @return yyyy-MM-dd HH:mm:ss
-     */
-    public String getStringDate() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        return dateString;
-    }
-
-    /**
-     * 保存bitmap到本地
-     *
-     * @param bitmap
-     * @return
-     */
-    public void saveBitmap(Bitmap bitmap, String name) {
-        String savePath;
-        File filePic;
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            savePath = "/sdcard/armeet/pic/";
-        } else {
-            Log.d("xxx", "saveBitmap: 1return");
-            return;
-        }
-        try {
-            filePic = new File(savePath + name + "_" + getStringDate() + ".jpg");
-            if (!filePic.exists()) {
-                filePic.getParentFile().mkdirs();
-                filePic.createNewFile();
-            }
-            FileOutputStream fos = new FileOutputStream(filePic);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d("xxx", "saveBitmap: 2return");
-            return;
-        }
-        Log.d("xxx", "saveBitmap: " + filePic.getAbsolutePath());
-    }
 
     /**
      * 打开远程视频渲染对象

@@ -400,6 +400,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                         ToastUtil.show("讲话被打断！");
                     } else if (code == 811) {
                         ToastUtil.show("讲话被打断！");
+                    }else if (code ==101){
+                        ToastUtil.show("讲话被打断！");
                     }
 
                 }
