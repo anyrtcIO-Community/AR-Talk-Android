@@ -22,9 +22,12 @@ AR-Talk-Android对讲调度demo,包括对讲、视频上报、监看、音视频
 
 ```
 dependencies {
-  compile 'org.ar:rtmax_kit:3.0.4'
+  compile 'org.ar:rtmax_kit:3.0.6'
 }
 ```
+
+### 更新
+V 3.0.6 : 去除了SDK中 OnRtcAudioActive回调 多余参数
 
 ### 安装
 
