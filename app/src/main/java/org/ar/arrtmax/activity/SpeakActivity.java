@@ -51,13 +51,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SpeakActivity extends BaseActivity implements View.OnClickListener,View.OnTouchListener{
+public class SpeakActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener {
 
-    TextView tvTitle,tvUserId,tv_exit;
+    TextView tvTitle, tvUserId, tv_exit;
     TabLayout tvTab;
     ViewPager viewPager;
     RecyclerView rvMessage;
-    ImageButton btnApply,btn_hang_up,btn_switch;
+    ImageButton btnApply, btn_hang_up, btn_switch;
     LinearLayout llMainLayout;
     RelativeLayout rl_call_video;
     RelativeLayout rl_call_layout;
@@ -78,7 +78,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     private boolean isJoinarSuccess = false;
     private boolean isPressed = false;
     boolean isCall = false;
-    boolean isAudioCall=false;
+    boolean isAudioCall = false;
     Vibrator vb;
     boolean isMonitoring = false;//是否被监看
 
@@ -87,6 +87,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     private EditText etMessage, etReport;
 
     private Button btnSendMessage, btnReport;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_speak;
@@ -94,18 +95,18 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        tvTitle=findViewById(R.id.tv_title);
-        tvTab=findViewById(R.id.tv_tab);
-        viewPager=findViewById(R.id.viewPager);
-        rvMessage=findViewById(R.id.rl_message);
-        btnApply=findViewById(R.id.btn_apply);
-        btn_hang_up=findViewById(R.id.btn_hang_up);
-        btn_switch=findViewById(R.id.btn_switch);
-        tvUserId=findViewById(R.id.tv_user_id);
-        tv_exit=findViewById(R.id.tv_exit);
-        llMainLayout=findViewById(R.id.ll_main_layout);
-        rl_call_video=findViewById(R.id.rl_call_video);
-        rl_call_layout=findViewById(R.id.rl_call_layout);
+        tvTitle = findViewById(R.id.tv_title);
+        tvTab = findViewById(R.id.tv_tab);
+        viewPager = findViewById(R.id.viewPager);
+        rvMessage = findViewById(R.id.rl_message);
+        btnApply = findViewById(R.id.btn_apply);
+        btn_hang_up = findViewById(R.id.btn_hang_up);
+        btn_switch = findViewById(R.id.btn_switch);
+        tvUserId = findViewById(R.id.tv_user_id);
+        tv_exit = findViewById(R.id.tv_exit);
+        llMainLayout = findViewById(R.id.ll_main_layout);
+        rl_call_video = findViewById(R.id.rl_call_video);
+        rl_call_layout = findViewById(R.id.rl_call_layout);
         tv_exit.setOnClickListener(this);
         btn_hang_up.setOnClickListener(this);
         btn_switch.setOnClickListener(this);
@@ -120,7 +121,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         etMessage = view_message.findViewById(R.id.et_message);
         btnSendMessage = view_message.findViewById(R.id.btn_send_message);
         btnSendMessage.setOnClickListener(this);
-
 
 
         etReport = view_report.findViewById(R.id.et_report_id);
@@ -172,8 +172,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         rvMessage.setAdapter(messageAdapter);
 
         mRTMaxKit = new ARMaxKit(arMaxEvent);
-        arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(),this,false,mRTMaxKit);
-        arVideoView.setVideoViewLayout(false, Gravity.CENTER,LinearLayout.HORIZONTAL);
+        arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(), this, false, mRTMaxKit);
+        arVideoView.setVideoViewLayout(false, Gravity.CENTER, LinearLayout.HORIZONTAL);
         vb = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         mRTMaxKit.joinTalkGroup("123456789", ARApplication.tempUserid, getUserData());
         tvUserId.setText("用户ID:" + ARApplication.tempUserid);
@@ -191,6 +191,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         mRTCAudioManager.init();
         btnApply.setOnTouchListener(this);
     }
+
     private void onAudioManagerChangedState() {
         // TODO(henrika): disable video if
         // AppRTCAudioManager.AudioDevice.EARPIECE is active.
@@ -375,7 +376,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     showLog("OnRtcTalkP2POff======userData===" + userData);
                     current_people_speaking = "";
                     hadSomeOneSpeaking = false;
-                    tvTitle.setText( current_people_num);
+                    tvTitle.setText(current_people_num);
                     if (qiangChaDialog != null) {
                         qiangChaDialog.dismiss();
                     }
@@ -400,7 +401,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                         ToastUtil.show("讲话被打断！");
                     } else if (code == 811) {
                         ToastUtil.show("讲话被打断！");
-                    }else if (code ==101){
+                    } else if (code == 101) {
                         ToastUtil.show("讲话被打断！");
                     }
 
@@ -414,19 +415,19 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void run() {
                     showLog("OnRtcVideoMonitorRequest======userId===" + userId);
-                    if (isReporting){
+                    if (isReporting) {
                         mRTMaxKit.rejectVideoMonitor(userId);
-                        ToastUtil.show("你正在上报视频，已拒绝"+userId+"监看请求");
+                        ToastUtil.show("你正在上报视频，已拒绝" + userId + "监看请求");
                         return;
                     }
-                    if (isMonitoring){
+                    if (isMonitoring) {
                         mRTMaxKit.rejectVideoMonitor(userId);
-                        ToastUtil.show("你正在被监看，已拒绝"+userId+"监看请求");
+                        ToastUtil.show("你正在被监看，已拒绝" + userId + "监看请求");
                         return;
                     }
-                    if (isCall){
+                    if (isCall) {
                         mRTMaxKit.rejectVideoMonitor(userId);
-                        ToastUtil.show("你正在通话中，已拒绝"+userId+"监看请求");
+                        ToastUtil.show("你正在通话中，已拒绝" + userId + "监看请求");
                         return;
                     }
                     ToastUtil.show("正在被用户" + userId + "监看");
@@ -434,7 +435,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     isMonitoring = true;
                     //监看  打开本地摄像头  并把本地像大小设置为0
                     mRTMaxKit.setLocalVideoCapturer(arVideoView.openLocalVideoRender().GetRenderPointer());
-                    arVideoView.getLocalVideoRender().mLayout.setPosition(0,0,0,0);
+                    arVideoView.getLocalVideoRender().mLayout.setPosition(0, 0, 0, 0);
 
 
                 }
@@ -505,389 +506,388 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 public void run() {
                     showLog("OnRtcAcceptCall======userId===" + userId);
                 }
-            });
-        }
-
-        @Override
-        public void onRTCRejectCall(final String userId, int nCode, String strUserData) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcRejectCall======userId===" + userId);
-                    ToastUtil.show("用户" + userId + "拒绝了你的通话请求");
-                }
-            });
-        }
-
-        @Override
-        public void onRTCLeaveCall(final String userId) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcLeaveCall======userId===" + userId);
-                }
-            });
-        }
-
-        @Override
-        public void onRTCReleaseCall(final String strCallId) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcReleaseCall======strCallId===" + strCallId);
-                }
-            });
-        }
-
-        @Override
-        public void onRTCMakeCall(final String strCallId, final int nCallType, final String userId, String strUserData) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcMakeCall======strCallId===" + strCallId + "=======nCallType" + nCallType);
-                    if (isReporting){
-                        mRTMaxKit.rejectCall(strCallId);
-                        ToastUtil.show("你正在上报视频，无法接受视频呼叫");
-                        return;
+                });
+            }
+            @Override
+            public void onRTCRejectCall ( final String userId, int nCode, String strUserData){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcRejectCall======userId===" + userId);
+                        ToastUtil.show("用户" + userId + "拒绝了你的通话请求");
                     }
-                    if (isMonitoring){
-                        mRTMaxKit.rejectCall(strCallId);
-                        ToastUtil.show("你正在被监看，无法接受视频呼叫");
-                        return;
-                    }
-                    if (isCall){
-                        ToastUtil.show("你正在通话中..");
-                        return;
-                    }
-                    ShowCallRequestDialog(strCallId, userId, nCallType);
-                }
-            });
-        }
+                });
+            }
 
-        @Override
-        public void onRTCEndCall(final String strCallId, final String userId, int nCode) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcEndCall======strCallId===" + strCallId + "=======userId" + userId);
-                    ToastUtil.show("主叫方已挂断本次通话");
-                    isCall = false;
-                    mRTMaxKit.leaveCall();
-                    if (!isAudioCall){
-                        rl_call_video.removeAllViews();
-                        mRTMaxKit.closeLocalVideoCapture();
-                        toggleVideoLayout();
-                    }else {
-                        if (AudioCallDialog!=null){
-                            AudioCallDialog.dismiss();
+            @Override
+            public void onRTCLeaveCall ( final String userId){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcLeaveCall======userId===" + userId);
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCReleaseCall ( final String strCallId){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcReleaseCall======strCallId===" + strCallId);
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCMakeCall ( final String strCallId, final int nCallType,
+            final String userId, String strUserData){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcMakeCall======strCallId===" + strCallId + "=======nCallType" + nCallType);
+                        if (isReporting) {
+                            mRTMaxKit.rejectCall(strCallId);
+                            ToastUtil.show("你正在上报视频，无法接受视频呼叫");
+                            return;
+                        }
+                        if (isMonitoring) {
+                            mRTMaxKit.rejectCall(strCallId);
+                            ToastUtil.show("你正在被监看，无法接受视频呼叫");
+                            return;
+                        }
+                        if (isCall) {
+                            ToastUtil.show("你正在通话中..");
+                            return;
+                        }
+                        ShowCallRequestDialog(strCallId, userId, nCallType);
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCEndCall ( final String strCallId, final String userId, int nCode){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcEndCall======strCallId===" + strCallId + "=======userId" + userId);
+                        ToastUtil.show("主叫方已挂断本次通话");
+                        isCall = false;
+                        mRTMaxKit.leaveCall();
+                        if (!isAudioCall) {
+                            rl_call_video.removeAllViews();
+                            mRTMaxKit.closeLocalVideoCapture();
+                            toggleVideoLayout();
+                        } else {
+                            if (AudioCallDialog != null) {
+                                AudioCallDialog.dismiss();
+                            }
+                        }
+
+                    }
+                });
+            }
+
+
+            @Override
+            public void onRTCOpenRemoteVideoRender ( final String peerId, final String publishId,
+            final String userId, String userData){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcOpenVideoRender======strRtcPeerId===" + peerId + "=======userId" + userId);
+                        //打开远程视频
+                        mRTMaxKit.setRTCRemoteVideoRender(publishId, arVideoView.openRemoteVideoRender(publishId).GetRenderPointer());
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCCloseRemoteVideoRender ( final String peerId, final String publishId,
+            final String userId){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcCloseVideoRender======strRtcPeerId===" + peerId + "=======userId" + userId);
+                        if (null != mRTMaxKit) {
+                            //移除
+                            mRTMaxKit.setRTCRemoteVideoRender(publishId, 0);
+                            arVideoView.removeRemoteRender(publishId);
                         }
                     }
+                });
+            }
 
-                }
-            });
-        }
+            @Override
+            public void onRTCOpenRemoteAudioTrack ( final String peerId, final String userId, String
+            userData){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcOpenAudioTrack======strRtcPeerId===" + peerId + "=======userId" + userId);
 
-
-        @Override
-        public void onRTCOpenRemoteVideoRender(final String peerId, final String publishId, final String userId, String userData) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcOpenVideoRender======strRtcPeerId===" + peerId + "=======userId" + userId);
-                    //打开远程视频
-                    mRTMaxKit.setRTCRemoteVideoRender(publishId, arVideoView.openRemoteVideoRender(publishId).GetRenderPointer());
-                }
-            });
-        }
-
-        @Override
-        public void onRTCCloseRemoteVideoRender(final String peerId, final String publishId, final String userId) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcCloseVideoRender======strRtcPeerId===" + peerId + "=======userId" + userId);
-                    if (null != mRTMaxKit) {
-                        //移除
-                        mRTMaxKit.setRTCRemoteVideoRender(publishId, 0);
-                        arVideoView.removeRemoteRender(publishId);
                     }
-                }
-            });
+                });
+            }
+
+            @Override
+            public void onRTCCloseRemoteAudioTrack ( final String peerId, final String userId){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcCloseAudioTrack======strRtcPeerId===" + peerId + "=======userId" + userId);
+
+
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCRemoteAVStatus ( final String peerId, boolean audio, boolean video){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcAVStatus======strRtcPeerId===" + peerId);
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCLocalAVStatus ( boolean audio, boolean video){
+
+            }
+
+            @Override
+            public void onRTCRemoteAudioActive ( final String peerId, String userId,
+            final int nLevel, int nShowtime){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcAudioActive======strRtcPeerId===" + peerId + "level" + nLevel);
+                    }
+                });
+            }
+
+            @Override
+            public void onRTLocalAudioActive ( int nLevel, int nTime){
+
+            }
+
+            @Override
+            public void onRTCRemoteNetworkStatus (String peerId, String userId,int nNetSpeed,
+            int nPacketLost, ARNetQuality netQuality){
+
+            }
+
+
+            @Override
+            public void onRTCLocalNetworkStatus ( int nNetSpeed, int nPacketLost, ARNetQuality
+            netQuality){
+
+            }
+
+            @Override
+            public void onRTCUserMessage ( final String userId, String userName, String headerUrl,
+            final String content){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showLog("OnRtcUserMessage======userId===" + userId + "content===" + content);
+                        messageAdapter.addData(new MessageBean(false, userId, content));
+                        if (messageAdapter != null && messageAdapter.getData().size() > 0) {
+                            if (rvMessage != null) {
+                                rvMessage.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCMemberNum ( final int nNum){
+                SpeakActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        current_people_num = "当前在线人数：" + nNum;
+                        tvTitle.setText(current_people_num);
+                    }
+                });
+            }
+
+            @Override
+            public void onRTCGotRecordFile ( int nRecType, String userData, String filePath){
+
+            }
+        }
+
+        ;
+
+        private int applyTalk(int nPriority) {
+            return mRTMaxKit.applyTalk(nPriority);
+        }
+
+        private void cancelTalk() {
+            mRTMaxKit.cancelTalk();
         }
 
         @Override
-        public void onRTCOpenRemoteAudioTrack(final String peerId, final String userId, String userData) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcOpenAudioTrack======strRtcPeerId===" + peerId + "=======userId" + userId);
-
-                }
-            });
+        protected void onResume() {
+            super.onResume();
         }
 
         @Override
-        public void onRTCCloseRemoteAudioTrack(final String peerId, final String userId) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcCloseAudioTrack======strRtcPeerId===" + peerId + "=======userId" + userId);
+        protected void onDestroy() {
+            super.onDestroy();
+            mRTMaxKit.clear();
+            //销毁音频管理器对象
+            if (mRTCAudioManager != null) {
+                mRTCAudioManager.close();
+                mRTCAudioManager = null;
+            }
+        }
 
+        private void showLog(String message) {
+            Logging.d(this.getClass().getSimpleName(), "-------------------->" + message);
+        }
 
-                }
-            });
+        public void toggleVideoLayout() {
+            if (llMainLayout.getTranslationX() == 0) {
+                hideIputKeyboard(this);
+                ObjectAnimator animator = ObjectAnimator.ofFloat(llMainLayout, "translationX", llMainLayout.getTranslationX(), -llMainLayout.getWidth());
+                animator.setDuration(400);
+                animator.start();
+                //打开本地摄像头
+                mRTMaxKit.setLocalVideoCapturer(arVideoView.openLocalVideoRender().GetRenderPointer());
+                rl_call_layout.setVisibility(View.VISIBLE);
+            } else {
+                ObjectAnimator animator = ObjectAnimator.ofFloat(llMainLayout, "translationX", llMainLayout.getTranslationX(), 0);
+                animator.setDuration(400);
+                animator.start();
+                rl_call_layout.setVisibility(View.GONE);
+            }
+        }
+
+        private void ToastMessage(String messages) {
+            //LayoutInflater的作用：对于一个没有被载入或者想要动态载入的界面，都需要LayoutInflater.inflate()来载入，LayoutInflater是用来找res/layout/下的xml布局文件，并且实例化
+            LayoutInflater inflater = getLayoutInflater();//调用Activity的getLayoutInflater()
+            View view = inflater.inflate(R.layout.item_toast, null); //加載layout下的布局
+            TextView text = view.findViewById(R.id.tv_content);
+            text.setText(messages); //toast内容
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.CENTER, 12, 20);//setGravity用来设置Toast显示的位置，相当于xml中的android:gravity或android:layout_gravity
+            toast.setDuration(Toast.LENGTH_SHORT);//setDuration方法：设置持续时间，以毫秒为单位。该方法是设置补间动画时间长度的主要方法
+            toast.setView(view); //添加视图文件
+            toast.show();
         }
 
         @Override
-        public void onRTCRemoteAVStatus(final String peerId, boolean audio, boolean video) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcAVStatus======strRtcPeerId===" + peerId);
-                }
-            });
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                ShowExitDialog();
+                return true;
+            }
+            return super.onKeyDown(keyCode, event);
         }
 
         @Override
-        public void onRTCLocalAVStatus(boolean audio, boolean video) {
-
-        }
-
-        @Override
-        public void onRTCRemoteAudioActive(final String peerId, String userId, final int nLevel, int nShowtime) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcAudioActive======strRtcPeerId===" + peerId + "level" + nLevel);
-                }
-            });
-        }
-
-        @Override
-        public void onRTLocalAudioActive(int nLevel, int nTime) {
-
-        }
-
-        @Override
-        public void onRTCRemoteNetworkStatus(String peerId, String userId, int nNetSpeed, int nPacketLost, ARNetQuality netQuality) {
-
-        }
-
-
-        @Override
-        public void onRTCLocalNetworkStatus(int nNetSpeed, int nPacketLost, ARNetQuality netQuality) {
-
-        }
-
-        @Override
-        public void onRTCUserMessage(final String userId, String userName, String headerUrl, final String content) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcUserMessage======userId===" + userId + "content===" + content);
-                    messageAdapter.addData(new MessageBean(false, userId, content));
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btn_send_message:
+                    if (etMessage.getText().toString().trim().isEmpty()) {
+                        ToastUtil.show("消息不能为空");
+                        return;
+                    }
+                    mRTMaxKit.sendMessage(ARApplication.tempNickName, "a", etMessage.getText().toString());
+                    messageAdapter.addData(new MessageBean(true, ARApplication.tempUserid, etMessage.getText().toString()));
                     if (messageAdapter != null && messageAdapter.getData().size() > 0) {
                         if (rvMessage != null) {
                             rvMessage.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
                         }
                     }
-                }
-            });
-        }
-
-        @Override
-        public void onRTCMemberNum(final int nNum) {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    current_people_num="当前在线人数："+nNum;
-                    tvTitle.setText(current_people_num);
-                }
-            });
-        }
-
-        @Override
-        public void onRTCGotRecordFile(int nRecType, String userData, String filePath) {
-
-        }
-    };
-    private int applyTalk(int nPriority) {
-        return mRTMaxKit.applyTalk(nPriority);
-    }
-
-    private void cancelTalk() {
-        mRTMaxKit.cancelTalk();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRTMaxKit.clear();
-        //销毁音频管理器对象
-        if (mRTCAudioManager != null) {
-            mRTCAudioManager.close();
-            mRTCAudioManager = null;
-        }
-    }
-
-    private void showLog(String message) {
-        Logging.d(this.getClass().getSimpleName(), "-------------------->" + message);
-    }
-    public void toggleVideoLayout() {
-        if (llMainLayout.getTranslationX() == 0) {
-            hideIputKeyboard(this);
-            ObjectAnimator animator = ObjectAnimator.ofFloat(llMainLayout, "translationX", llMainLayout.getTranslationX(), -llMainLayout.getWidth());
-            animator.setDuration(400);
-            animator.start();
-            //打开本地摄像头
-            mRTMaxKit.setLocalVideoCapturer(arVideoView.openLocalVideoRender().GetRenderPointer());
-            rl_call_layout.setVisibility(View.VISIBLE);
-        } else {
-            ObjectAnimator animator = ObjectAnimator.ofFloat(llMainLayout, "translationX", llMainLayout.getTranslationX(), 0);
-            animator.setDuration(400);
-            animator.start();
-            rl_call_layout.setVisibility(View.GONE);
-        }
-    }
-
-    private void ToastMessage(String messages) {
-        //LayoutInflater的作用：对于一个没有被载入或者想要动态载入的界面，都需要LayoutInflater.inflate()来载入，LayoutInflater是用来找res/layout/下的xml布局文件，并且实例化
-        LayoutInflater inflater = getLayoutInflater();//调用Activity的getLayoutInflater()
-        View view = inflater.inflate(R.layout.item_toast,  null); //加載layout下的布局
-        TextView text = view.findViewById(R.id.tv_content);
-        text.setText(messages); //toast内容
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER, 12, 20);//setGravity用来设置Toast显示的位置，相当于xml中的android:gravity或android:layout_gravity
-        toast.setDuration(Toast.LENGTH_SHORT);//setDuration方法：设置持续时间，以毫秒为单位。该方法是设置补间动画时间长度的主要方法
-        toast.setView(view); //添加视图文件
-        toast.show();
-    }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ShowExitDialog();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_send_message:
-                if (etMessage.getText().toString().trim().isEmpty()){
-                    ToastUtil.show("消息不能为空");
-                    return;
-                }
-                mRTMaxKit.sendMessage(ARApplication.tempNickName, "a", etMessage.getText().toString());
-                messageAdapter.addData(new MessageBean(true, ARApplication.tempUserid, etMessage.getText().toString()));
-                if (messageAdapter != null && messageAdapter.getData().size() > 0) {
-                    if (rvMessage != null) {
-                        rvMessage.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                    etMessage.setText("");
+                    hideIputKeyboard(this);
+                    break;
+                case R.id.btn_report:
+                    if (etReport.getText().toString().isEmpty()) {
+                        ToastUtil.show("请输入上报用户的ID");
+                        return;
                     }
-                }
-                etMessage.setText("");
-                hideIputKeyboard(this);
-                break;
-            case R.id.btn_report:
-                if (etReport.getText().toString().isEmpty()) {
-                    ToastUtil.show("请输入上报用户的ID");
-                    return;
-                }
-                if (!isJoinarSuccess) {
-                    ToastUtil.show("加入房间未成功");
-                    return;
-                }
-                if (isMonitoring) {
-                    ToastUtil.show("你正在被监看，视频通道被占用，无法上报视频");
-                    return;
-                }
-                int result = mRTMaxKit.reportVideo(etReport.getText().toString());
-                if (result != 0) {
-                    ToastUtil.show("异常 error:" + result);
-                } else {
-                    isReporting=true;
-                    toggleVideoLayout();
-                }
-                break;
-            case R.id.tv_exit:
-                ShowExitDialog();
-                break;
-            case R.id.btn_hang_up:
-                if (isReporting){//如果是上报
-                    isReporting=false;
-                    mRTMaxKit.closeReportVideo();
-                    arVideoView.removeLocalVideoRender();
-                    mRTMaxKit.closeLocalVideoCapture();
-                }else {
-                    if (mRTMaxKit != null) {
-                        mRTMaxKit.leaveCall();
+                    if (!isJoinarSuccess) {
+                        ToastUtil.show("加入房间未成功");
+                        return;
                     }
-                    isCall = false;
-                    rl_call_video.removeAllViews();
-                    arVideoView.removeLocalVideoRender();
-                    mRTMaxKit.closeLocalVideoCapture();
-                }
-                toggleVideoLayout();
-                break;
-            case R.id.btn_switch:
-                mRTMaxKit.switchCamera();
-                break;
-        }
-    }
-
-    public void ShowCallRequestDialog(final String strCallId, final String userId, final int type) {
-        CustomDialog.Builder builder = new CustomDialog.Builder(this);
-        builder.setContentView(R.layout.dialog_call_request)
-                .setAnimId(R.style.AnimBottom)
-                .setCancelable(false)
-                .setGravity(Gravity.CENTER)
-                .setLayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-                .setBackgroundDrawable(true)
-                .build();
-        CallRequestDialog = builder.show(new CustomDialog.Builder.onInitListener() {
-            @Override
-            public void init(CustomDialog view) {
-                TextView cancle = view.findViewById(R.id.tv_no);
-                TextView tvAccept = view.findViewById(R.id.tv_ok);
-                TextView content = view.findViewById(R.id.content);
-                content.setText("用户" + userId + "对你发起" + (type == 0 ? "视频呼叫" : "音频呼叫"));
-                cancle.setText("拒绝");
-                tvAccept.setText("同意");
-                cancle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        isCall = false;
-                        mRTMaxKit.rejectCall(strCallId);
-                        if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
-                            CallRequestDialog.dismiss();
+                    if (isMonitoring) {
+                        ToastUtil.show("你正在被监看，视频通道被占用，无法上报视频");
+                        return;
+                    }
+                    int result = mRTMaxKit.reportVideo(etReport.getText().toString());
+                    if (result != 0) {
+                        ToastUtil.show("异常 error:" + result);
+                    } else {
+                        isReporting = true;
+                        toggleVideoLayout();
+                    }
+                    break;
+                case R.id.tv_exit:
+                    ShowExitDialog();
+                    break;
+                case R.id.btn_hang_up:
+                    if (isReporting) {//如果是上报
+                        isReporting = false;
+                        mRTMaxKit.closeReportVideo();
+                        arVideoView.removeLocalVideoRender();
+                        mRTMaxKit.closeLocalVideoCapture();
+                    } else {
+                        if (mRTMaxKit != null) {
+                            mRTMaxKit.leaveCall();
                         }
+                        isCall = false;
+                        rl_call_video.removeAllViews();
+                        arVideoView.removeLocalVideoRender();
+                        mRTMaxKit.closeLocalVideoCapture();
                     }
-                });
+                    toggleVideoLayout();
+                    break;
+                case R.id.btn_switch:
+                    mRTMaxKit.switchCamera();
+                    break;
+            }
+        }
 
-                tvAccept.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (isMonitoring){
-                            ToastUtil.show("你正在被监看");
+        public void ShowCallRequestDialog(final String strCallId, final String userId, final int type) {
+            CustomDialog.Builder builder = new CustomDialog.Builder(this);
+            builder.setContentView(R.layout.dialog_call_request)
+                    .setAnimId(R.style.AnimBottom)
+                    .setCancelable(false)
+                    .setGravity(Gravity.CENTER)
+                    .setLayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+                    .setBackgroundDrawable(true)
+                    .build();
+            CallRequestDialog = builder.show(new CustomDialog.Builder.onInitListener() {
+                @Override
+                public void init(CustomDialog view) {
+                    TextView cancle = view.findViewById(R.id.tv_no);
+                    TextView tvAccept = view.findViewById(R.id.tv_ok);
+                    TextView content = view.findViewById(R.id.content);
+                    content.setText("用户" + userId + "对你发起" + (type == 0 ? "视频呼叫" : "音频呼叫"));
+                    cancle.setText("拒绝");
+                    tvAccept.setText("同意");
+                    cancle.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            isCall = false;
                             mRTMaxKit.rejectCall(strCallId);
                             if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
                                 CallRequestDialog.dismiss();
                             }
-                            return;
                         }
-                        mRTMaxKit.acceptCall(strCallId);
-                        isCall = true;
-                        if (type == 0) {
-                            isAudioCall=false;
-                            toggleVideoLayout();
-                        } else {
-                            if (isMonitoring){
+                    });
+
+                    tvAccept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (isMonitoring) {
                                 ToastUtil.show("你正在被监看");
                                 mRTMaxKit.rejectCall(strCallId);
                                 if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
@@ -895,140 +895,154 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                                 }
                                 return;
                             }
-                            isAudioCall=true;
-                            ShowAudioCallDialog(userId);
-                        }
-                        if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
-                            CallRequestDialog.dismiss();
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-
-    public void ShowAudioCallDialog(final String userId) {
-        CustomDialog.Builder builder = new CustomDialog.Builder(this);
-        builder.setContentView(R.layout.dialog_audio_call_layout)
-                .setAnimId(R.style.AnimBottom)
-                .setCancelable(false)
-                .setGravity(Gravity.CENTER)
-                .setLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-                .setBackgroundDrawable(true)
-                .build();
-        AudioCallDialog = builder.show(new CustomDialog.Builder.onInitListener() {
-            @Override
-            public void init(CustomDialog view) {
-                TextView tv_userid = view.findViewById(R.id.tv_userid);
-                ImageButton btn_close_audio = view.findViewById(R.id.btn_close_audio);
-                tv_userid.setText(userId);
-                btn_close_audio.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        isCall=false;
-                        mRTMaxKit.leaveCall();
-                        AudioCallDialog.dismiss();
-                    }
-                });
-            }
-        });
-    }
-
-    public void ShowQiangchaDialog(final String userId) {
-        CustomDialog.Builder builder = new CustomDialog.Builder(this);
-        builder.setContentView(R.layout.dialog_qiangcha)
-                .setAnimId(R.style.AnimBottom)
-                .setCancelable(false)
-                .setGravity(Gravity.CENTER)
-                .setLayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-                .setBackgroundDrawable(true)
-                .build();
-        qiangChaDialog = builder.show(new CustomDialog.Builder.onInitListener() {
-            @Override
-            public void init(CustomDialog view) {
-                TextView tv_userid = view.findViewById(R.id.tv_user_id);
-                ImageView ivAudio = view.findViewById(R.id.iv_audio);
-                tv_userid.setText(userId + "正在强插对话");
-                ivAudio.setImageResource(R.drawable.audio_anim );
-                AnimationDrawable animationDrawable = (AnimationDrawable) ivAudio.getDrawable();
-                animationDrawable.start();
-            }
-        });
-    }
-
-    public void ShowExitDialog() {
-        CustomDialog.Builder builder = new CustomDialog.Builder(this);
-        builder.setContentView(R.layout.dialog_base_layout_two_btn )
-                .setAnimId(R.style.AnimBottom)
-                .setGravity(Gravity.CENTER)
-                .setLayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-                .setBackgroundDrawable(true)
-                .build();
-        exitDialog = builder.show(new CustomDialog.Builder.onInitListener() {
-            @Override
-            public void init(CustomDialog view) {
-                TextView cancle = view.findViewById(R.id.tv_no);
-                TextView ok = view.findViewById(R.id.tv_ok);
-                cancle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (null != exitDialog && exitDialog.isShowing()) {
-                            exitDialog.dismiss();
-                        }
-                    }
-                });
-
-                ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (null != exitDialog && exitDialog.isShowing()) {
-                            exitDialog.dismiss();
-                            if (isCall) {
-                                mRTMaxKit.leaveCall();
+                            mRTMaxKit.acceptCall(strCallId);
+                            isCall = true;
+                            if (type == 0) {
+                                isAudioCall = false;
+                                toggleVideoLayout();
+                            } else {
+                                if (isMonitoring) {
+                                    ToastUtil.show("你正在被监看");
+                                    mRTMaxKit.rejectCall(strCallId);
+                                    if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
+                                        CallRequestDialog.dismiss();
+                                    }
+                                    return;
+                                }
+                                isAudioCall = true;
+                                ShowAudioCallDialog(userId);
                             }
-                            finishAnimActivity();
+                            if (null != CallRequestDialog && CallRequestDialog.isShowing()) {
+                                CallRequestDialog.dismiss();
+                            }
                         }
-
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.btn_apply) {
-            if (isJoinarSuccess) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (hadSomeOneSpeaking) {
-                        tvTitle.setText(current_people_speaking);
-                        return false;
-                    }
-                    isPressed = false;
-                    showLog("抬起");
-                    cancelTalk();
-                    SoundPlayUtils.play(1);
-                    tvTitle.setText( current_people_num);
+                    });
                 }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (hadSomeOneSpeaking) {
-                        tvTitle.setText("当前有人正在上麦");
-                        return false;
-                    }
-                    isPressed = true;
-                    showLog("按下");
-                    SoundPlayUtils.play(1);
-                    tvTitle.setText("准备中...");
-                    int result = applyTalk(2);
-                    if (result != 0) {
-                        ToastMessage("操作过于频繁");
-                    }
-                }
-            } else {
-                ToastUtil.show(getString(R.string.join_group_faild));
-            }
+            });
         }
-        return false;
+
+
+        public void ShowAudioCallDialog(final String userId) {
+            CustomDialog.Builder builder = new CustomDialog.Builder(this);
+            builder.setContentView(R.layout.dialog_audio_call_layout)
+                    .setAnimId(R.style.AnimBottom)
+                    .setCancelable(false)
+                    .setGravity(Gravity.CENTER)
+                    .setLayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+                    .setBackgroundDrawable(true)
+                    .build();
+            AudioCallDialog = builder.show(new CustomDialog.Builder.onInitListener() {
+                @Override
+                public void init(CustomDialog view) {
+                    TextView tv_userid = view.findViewById(R.id.tv_userid);
+                    ImageButton btn_close_audio = view.findViewById(R.id.btn_close_audio);
+                    tv_userid.setText(userId);
+                    btn_close_audio.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            isCall = false;
+                            mRTMaxKit.leaveCall();
+                            AudioCallDialog.dismiss();
+                        }
+                    });
+                }
+            });
+        }
+
+        public void ShowQiangchaDialog(final String userId) {
+            CustomDialog.Builder builder = new CustomDialog.Builder(this);
+            builder.setContentView(R.layout.dialog_qiangcha)
+                    .setAnimId(R.style.AnimBottom)
+                    .setCancelable(false)
+                    .setGravity(Gravity.CENTER)
+                    .setLayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+                    .setBackgroundDrawable(true)
+                    .build();
+            qiangChaDialog = builder.show(new CustomDialog.Builder.onInitListener() {
+                @Override
+                public void init(CustomDialog view) {
+                    TextView tv_userid = view.findViewById(R.id.tv_user_id);
+                    ImageView ivAudio = view.findViewById(R.id.iv_audio);
+                    tv_userid.setText(userId + "正在强插对话");
+                    ivAudio.setImageResource(R.drawable.audio_anim);
+                    AnimationDrawable animationDrawable = (AnimationDrawable) ivAudio.getDrawable();
+                    animationDrawable.start();
+                }
+            });
+        }
+
+        public void ShowExitDialog() {
+            CustomDialog.Builder builder = new CustomDialog.Builder(this);
+            builder.setContentView(R.layout.dialog_base_layout_two_btn)
+                    .setAnimId(R.style.AnimBottom)
+                    .setGravity(Gravity.CENTER)
+                    .setLayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+                    .setBackgroundDrawable(true)
+                    .build();
+            exitDialog = builder.show(new CustomDialog.Builder.onInitListener() {
+                @Override
+                public void init(CustomDialog view) {
+                    TextView cancle = view.findViewById(R.id.tv_no);
+                    TextView ok = view.findViewById(R.id.tv_ok);
+                    cancle.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (null != exitDialog && exitDialog.isShowing()) {
+                                exitDialog.dismiss();
+                            }
+                        }
+                    });
+
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (null != exitDialog && exitDialog.isShowing()) {
+                                exitDialog.dismiss();
+                                if (isCall) {
+                                    mRTMaxKit.leaveCall();
+                                }
+                                finishAnimActivity();
+                            }
+
+                        }
+                    });
+                }
+            });
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (v.getId() == R.id.btn_apply) {
+                if (isJoinarSuccess) {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (hadSomeOneSpeaking) {
+                            tvTitle.setText(current_people_speaking);
+                            return false;
+                        }
+                        isPressed = false;
+                        showLog("抬起");
+                        cancelTalk();
+                        SoundPlayUtils.play(1);
+                        tvTitle.setText(current_people_num);
+                    }
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        if (hadSomeOneSpeaking) {
+                            tvTitle.setText("当前有人正在上麦");
+                            return false;
+                        }
+                        isPressed = true;
+                        showLog("按下");
+                        SoundPlayUtils.play(1);
+                        tvTitle.setText("准备中...");
+                        int result = applyTalk(2);
+                        if (result != 0) {
+                            ToastMessage("操作过于频繁");
+                        }
+                    }
+                } else {
+                    ToastUtil.show(getString(R.string.join_group_faild));
+                }
+            }
+            return false;
+        }
     }
-}
