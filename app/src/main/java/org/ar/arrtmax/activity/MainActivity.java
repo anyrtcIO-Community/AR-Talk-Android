@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.btn_join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AndPermission.with(MainActivity.this).runtime().permission(Permission.CAMERA,Permission.RECORD_AUDIO).onGranted(new Action<List<String>>() {
+                AndPermission.with(MainActivity.this).runtime().permission(Permission.CAMERA,Permission.RECORD_AUDIO,Permission.WRITE_EXTERNAL_STORAGE,Permission.READ_EXTERNAL_STORAGE).onGranted(new Action<List<String>>() {
                     @Override
                     public void onAction(List<String> data) {
                         startAnimActivity(SpeakActivity.class);
