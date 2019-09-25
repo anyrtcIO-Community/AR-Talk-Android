@@ -198,34 +198,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         mRTCAudioManager.init();
         btnApply.setOnTouchListener(this);
 
-         callpath = Environment.getExternalStorageDirectory().getPath() + "/Android/armax/callpath/";
-        File callpathfile = new File(callpath);
-        if (!callpathfile.exists()) {
-            callpathfile.mkdirs();
-        }
-
-         talkpath = Environment.getExternalStorageDirectory().getPath() + "/Android/armax/talkpath/";
-         talkpathfile = new File(talkpath);
-        if (!talkpathfile.exists()) {
-            talkpathfile.mkdirs();
-        }
-
-
-         p2ppath = Environment.getExternalStorageDirectory().getPath() + "/Android/armax/p2ppath/";
-        File p2ppathfile = new File(p2ppath);
-        if (!p2ppathfile.exists()) {
-            p2ppathfile.mkdirs();
-        }
-
-        Log.d("SpeakActivity",callpathfile.canWrite()+"///"+talkpathfile.canWrite()+"///"+p2ppathfile.canWrite());
-
-        findViewById(R.id.btn_record).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               int result= mRTMaxKit.setRecordPath(talkpathfile.getAbsolutePath(),talkpathfile.getAbsolutePath(),talkpathfile.getAbsolutePath());
-                ToastUtil.show(result+"");
-            }
-        });
     }
 
     private void onAudioManagerChangedState() {
@@ -349,11 +321,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void run() {
                     showLog("OnRtcApplyTalkOk====");
-//                    if (isPressed) {
-//                        tvTitle.setText("准备中...");
-//                    } else {
-//                        cancelTalk();
-//                    }
                     long l = System.currentTimeMillis();
                     Log.d("time=========", "可以说话========" + l + "");
                     Log.d("time=========", "耗时========" + (l - time) + "");

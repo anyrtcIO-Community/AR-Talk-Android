@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
                 }).onDenied(new Action<List<String>>() {
                     @Override
                     public void onAction(List<String> data) {
-                        ToastUtil.show("请开启音视频权限");
+                        ToastUtil.show("请开启音视频,文件读取权限");
                     }
                 }).start();
             }
