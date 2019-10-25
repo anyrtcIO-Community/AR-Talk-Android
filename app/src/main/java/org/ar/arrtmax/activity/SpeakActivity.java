@@ -92,9 +92,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
 
     private Button btnSendMessage, btnReport;
 
-    private String p2ppath,callpath,talkpath;
-    File talkpathfile;
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_speak;
@@ -182,7 +179,10 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(), this, false, mRTMaxKit);
         arVideoView.setVideoViewLayout(false, Gravity.CENTER, LinearLayout.HORIZONTAL);
         vb = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
+        mRTMaxKit.setAudioActiveCheck(true,true);
+
         mRTMaxKit.joinTalkGroup("123456789", ARApplication.tempUserid, getUserData());
+
         tvUserId.setText("用户ID:" + ARApplication.tempUserid);
         mRTCAudioManager = AR_AudioManager.create(this, new Runnable() {
             // This method will be called each time the audio state (number
@@ -321,10 +321,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                 @Override
                 public void run() {
                     showLog("OnRtcApplyTalkOk====");
-                    long l = System.currentTimeMillis();
-                    Log.d("time=========", "可以说话========" + l + "");
-                    Log.d("time=========", "耗时========" + (l - time) + "");
-
                     if (isPressed) {
                         tvTitle.setText("我正在发言");
                         current_people_speaking = "我正在发言";
@@ -688,8 +684,13 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         }
 
         @Override
-        public void onRTCLocalAudioActive(int i, int i1) {
-
+        public void onRTCLocalAudioActive(final int i, final int i1) {
+            SpeakActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showLog("onRTCLocalAudioActive======i===" + i + "i1" + i1);
+                }
+            });
         }
 
         @Override
@@ -1033,7 +1034,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
-    public long time;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -1057,8 +1057,6 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     }
                     isPressed = true;
                     showLog("按下");
-                    time = System.currentTimeMillis();
-                    Log.d("time=========", "按下========" + time + "");
                     SoundPlayUtils.play(1);
                     tvTitle.setText("准备中...");
                     int result = applyTalk(2);
