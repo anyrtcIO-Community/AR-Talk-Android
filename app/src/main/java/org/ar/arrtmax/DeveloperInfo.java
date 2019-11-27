@@ -10,12 +10,12 @@ public class DeveloperInfo {
     /**
      *  平台的appid
      */
-    public final static String APPID = "anyrtc6L5flBoIawmW";
+    public final static String APPID = "";
 
     /**
      *  平台的apptoken
      */
-    public final static String APPTOKEN = "421a0c676754e83c5246ff1aaebc11d4";
+    public final static String APPTOKEN = "";
 
 
 }

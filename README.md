@@ -10,9 +10,7 @@ AR-Talk-Android对讲调度demo,包括对讲、视频上报、监看、音视频
 
 ### app体验
 
-##### 扫码下载
-![image](https://www.pgyer.com/app/qrcode/GVI3)
-##### [点击下载](https://www.pgyer.com/GVI3)
+##### [点击下载](https://fir.im/3by1)
 ##### [WEB在线体验](https://beyond.anyrtc.io/demo/dispatch)
 
 ### SDK集成
@@ -22,7 +20,7 @@ AR-Talk-Android对讲调度demo,包括对讲、视频上报、监看、音视频
 
 ```
 dependencies {
-  compile 'org.ar:rtmax_kit:3.0.6'
+  compile 'org.ar:rtmax_kit:3.0.8'
 }
 ```
 
