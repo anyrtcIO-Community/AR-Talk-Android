@@ -41,6 +41,7 @@ import org.ar.arrtmax.utils.ToastUtil;
 import org.ar.arrtmax.weight.ARVideoView;
 import org.ar.arrtmax.weight.CustomDialog;
 import org.ar.common.enums.ARNetQuality;
+import org.ar.common.utils.ARAudioManager;
 import org.ar.common.utils.AR_AudioManager;
 import org.ar.rtmax_kit.ARMaxEngine;
 import org.ar.rtmax_kit.ARMaxEvent;
@@ -53,6 +54,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 public class SpeakActivity extends BaseActivity implements View.OnClickListener, View.OnTouchListener {
@@ -72,7 +74,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
     private CustomDialog exitDialog;
     private ARMaxKit mRTMaxKit;
     private ARVideoView arVideoView;
-    private AR_AudioManager mRTCAudioManager;
+    private ARAudioManager mRTCAudioManager;
     private CustomDialog CallRequestDialog;
     private CustomDialog qiangChaDialog;
     private CustomDialog AudioCallDialog;
@@ -179,23 +181,17 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(), this, false, mRTMaxKit);
         arVideoView.setVideoViewLayout(false, Gravity.CENTER, LinearLayout.HORIZONTAL);
         vb = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
-        mRTMaxKit.setAudioActiveCheck(true,true);
-
         mRTMaxKit.joinTalkGroup("123456789", ARApplication.tempUserid, getUserData());
-
         tvUserId.setText("用户ID:" + ARApplication.tempUserid);
-        mRTCAudioManager = AR_AudioManager.create(this, new Runnable() {
-            // This method will be called each time the audio state (number
-            // and
-            // type of devices) has been changed.
-            @Override
-            public void run() {
-                onAudioManagerChangedState();
-            }
-        });
+        mRTCAudioManager = ARAudioManager.create(this);
         // Store existing audio settings and change audio mode to
         // MODE_IN_COMMUNICATION for best possible VoIP performance.
-        mRTCAudioManager.init();
+        mRTCAudioManager.start(new ARAudioManager.AudioManagerEvents() {
+            @Override
+            public void onAudioDeviceChanged(ARAudioManager.AudioDevice selectedAudioDevice, Set<ARAudioManager.AudioDevice> availableAudioDevices) {
+
+            }
+        });
         btnApply.setOnTouchListener(this);
 
     }
@@ -764,7 +760,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         mRTMaxKit.clear();
         //销毁音频管理器对象
         if (mRTCAudioManager != null) {
-            mRTCAudioManager.close();
+            mRTCAudioManager.stop();
             mRTCAudioManager = null;
         }
     }

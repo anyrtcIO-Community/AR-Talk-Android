@@ -58,3 +58,4 @@ workspace.xml
 
 # Keystore files
 *.jks
+*.zip

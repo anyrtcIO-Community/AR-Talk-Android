@@ -25,8 +25,7 @@ public class ARApplication extends Application {
         mInstance = this;
         tempNickName= NameUtils.getNickName();
         tempUserid=randomNum(6);
-        ARMaxEngine.Inst().initEngineWithARInfo(getApplicationContext(), false, DeveloperInfo.APPID,  DeveloperInfo.APPTOKEN);
-//        ARMaxEngine.Inst().configServerForPriCloud("pro.anyrtc.io", 9080);
+        ARMaxEngine.Inst().initEngine(getApplicationContext(), false, DeveloperInfo.APPID,  DeveloperInfo.APPTOKEN);
     }
 
     public static String randomNum(int num){
