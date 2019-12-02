@@ -178,7 +178,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         rvMessage.setAdapter(messageAdapter);
 
         mRTMaxKit = new ARMaxKit(arMaxEvent);
-        arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(), this, false, mRTMaxKit);
+        arVideoView = new ARVideoView(rl_call_video, ARMaxEngine.Inst().egl(), this);
         arVideoView.setVideoViewLayout(false, Gravity.CENTER, LinearLayout.HORIZONTAL);
         vb = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         mRTMaxKit.joinTalkGroup("123456789", ARApplication.tempUserid, getUserData());
@@ -577,6 +577,7 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     mRTMaxKit.leaveCall();
                     if (!isAudioCall) {
                         rl_call_video.removeAllViews();
+                        arVideoView.removeLocalVideoRender();
                         mRTMaxKit.closeLocalVideoCapture();
                         toggleVideoLayout();
                     } else {
