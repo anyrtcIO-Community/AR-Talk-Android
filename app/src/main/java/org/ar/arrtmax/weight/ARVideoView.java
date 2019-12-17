@@ -127,6 +127,7 @@ public class ARVideoView implements View.OnTouchListener {
         public VideoRenderer videoRenderer = null; //底层视频渲染对象
         public RelativeLayout rl_root;
 
+
         public VideoView(final String videoId, final Context ctx, EglBase eglBase, int index, int x, int y, int w, int h) {
             this.videoId = videoId;
             this.index = index;
