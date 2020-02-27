@@ -43,6 +43,7 @@ import org.ar.arrtmax.weight.CustomDialog;
 import org.ar.common.enums.ARNetQuality;
 import org.ar.common.utils.ARAudioManager;
 import org.ar.common.utils.AR_AudioManager;
+import org.ar.common.utils.NetworkUtils;
 import org.ar.rtmax_kit.ARMaxEngine;
 import org.ar.rtmax_kit.ARMaxEvent;
 import org.ar.rtmax_kit.ARMaxKit;
@@ -277,6 +278,11 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
 
     ARMaxEvent arMaxEvent = new ARMaxEvent() {
         @Override
+        public void onRTCNetworkType(NetworkUtils.NetworkType networkType) {
+
+        }
+
+        @Override
         public void onRTCJoinTalkGroupOK(final String groupId) {
             SpeakActivity.this.runOnUiThread(new Runnable() {
                 @Override
@@ -299,6 +305,11 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     finish();
                 }
             });
+        }
+
+        @Override
+        public void onRTCTempLeaveTalkGroup(int i) {
+
         }
 
         @Override
@@ -331,14 +342,8 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         }
 
         @Override
-        public void onRTCTalkCouldSpeak() {
-            SpeakActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showLog("OnRtcTalkCouldSpeak====");
+        public void onRTCApplyTalkClosed(int i, String s, String s1) {
 
-                }
-            });
         }
 
         @Override
@@ -704,6 +709,11 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
         }
 
         @Override
+        public void onRTCNetStatsAll(int i, int i1, int i2, String s) {
+
+        }
+
+        @Override
         public void onRTCUserMessage(final String userId, String userName, String headerUrl,
                                      final String content) {
             SpeakActivity.this.runOnUiThread(new Runnable() {
@@ -739,6 +749,26 @@ public class SpeakActivity extends BaseActivity implements View.OnClickListener,
                     showLog("onRTCGotRecordFile======nRecType===" + nRecType+"filePath:"+filePath);
                 }
             });
+        }
+
+        @Override
+        public void onRTCJoinMaxGroupOk(String s) {
+
+        }
+
+        @Override
+        public void onRTCTempLeaveMaxGroup(int i) {
+
+        }
+
+        @Override
+        public void onRTCJoinMaxGroupFailed(String s, int i, String s1) {
+
+        }
+
+        @Override
+        public void onRTCLeaveMaxGroup(int i) {
+
         }
     };
 

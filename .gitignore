@@ -59,3 +59,4 @@ workspace.xml
 # Keystore files
 *.jks
 *.zip
+ar_common/
